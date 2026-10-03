@@ -13,10 +13,8 @@ class AppUser(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
-
     @Column(nullable = false, unique = true)
     var username: String,
-
     // только bcrypt-хэш, сам пароль никуда не пишем
     @Column(name = "password_hash", nullable = false)
     var passwordHash: String,

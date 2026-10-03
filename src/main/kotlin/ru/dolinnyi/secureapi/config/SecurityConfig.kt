@@ -28,7 +28,6 @@ class SecurityConfig(
     private val jwtService: JwtService,
     private val userDetailsService: UserDetailsService,
 ) {
-
     @Bean
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
@@ -57,9 +56,10 @@ class SecurityConfig(
         return http.build()
     }
 
-    private fun unauthorizedEntryPoint() = AuthenticationEntryPoint { _, response, _ ->
-        response.status = HttpStatus.UNAUTHORIZED.value()
-        response.contentType = MediaType.APPLICATION_JSON_VALUE
-        response.writer.write("""{"error":"unauthorized"}""")
-    }
+    private fun unauthorizedEntryPoint() =
+        AuthenticationEntryPoint { _, response, _ ->
+            response.status = HttpStatus.UNAUTHORIZED.value()
+            response.contentType = MediaType.APPLICATION_JSON_VALUE
+            response.writer.write("""{"error":"unauthorized"}""")
+        }
 }

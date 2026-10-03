@@ -2,6 +2,7 @@ package ru.dolinnyi.secureapi.notes
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
+import org.springframework.web.util.HtmlUtils
 import java.time.Instant
 
 data class CreateNoteRequest(
@@ -16,4 +17,12 @@ data class NoteResponse(
     val createdAt: Instant,
 )
 
-fun Note.toResponse() = NoteResponse(requireNotNull(id), title, content, createdAt)
+// текст заметки пишет пользователь, клиент может вставить его в html как есть,
+// поэтому < > & " ' экранируем на выходе
+fun Note.toResponse() =
+    NoteResponse(
+        id = requireNotNull(id),
+        title = HtmlUtils.htmlEscape(title),
+        content = HtmlUtils.htmlEscape(content),
+        createdAt = createdAt,
+    )

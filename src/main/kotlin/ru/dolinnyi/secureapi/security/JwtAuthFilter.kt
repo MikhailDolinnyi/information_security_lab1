@@ -15,7 +15,6 @@ class JwtAuthFilter(
     private val jwtService: JwtService,
     private val userDetailsService: UserDetailsService,
 ) : OncePerRequestFilter() {
-
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -34,15 +33,19 @@ class JwtAuthFilter(
         return header.removePrefix("Bearer ").trim().ifEmpty { null }
     }
 
-    private fun authenticate(token: String, request: HttpServletRequest) {
+    private fun authenticate(
+        token: String,
+        request: HttpServletRequest,
+    ) {
         val username = jwtService.subjectOf(token) ?: return
-        val user = try {
-            userDetailsService.loadUserByUsername(username)
-        } catch (e: UsernameNotFoundException) {
-            // токен валидный, но пользователя уже нет
-            logger.debug("token for unknown user: $username")
-            return
-        }
+        val user =
+            try {
+                userDetailsService.loadUserByUsername(username)
+            } catch (_: UsernameNotFoundException) {
+                // токен валидный, но пользователя уже нет
+                logger.debug("token for unknown user: $username")
+                return
+            }
         val auth = UsernamePasswordAuthenticationToken(user, null, user.authorities)
         auth.details = WebAuthenticationDetailsSource().buildDetails(request)
         SecurityContextHolder.getContext().authentication = auth

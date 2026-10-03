@@ -16,12 +16,13 @@ class AuthController(
     private val authenticationManager: AuthenticationManager,
     private val jwtService: JwtService,
 ) {
-
     @PostMapping("/login")
-    fun login(@Valid @RequestBody request: LoginRequest): TokenResponse {
+    fun login(
+        @Valid @RequestBody request: LoginRequest,
+    ): TokenResponse {
         // при неверном пароле бросит BadCredentialsException, его ловит ApiExceptionHandler
         authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(request.username, request.password)
+            UsernamePasswordAuthenticationToken(request.username, request.password),
         )
         return TokenResponse(jwtService.issue(request.username), jwtService.ttlSeconds)
     }
