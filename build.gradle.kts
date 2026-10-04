@@ -60,6 +60,9 @@ dependencyCheck {
     // ключ nvd из переменной окружения, в ci он приходит из secrets
     nvd.apiKey = System.getenv("NVD_API_KEY") ?: ""
     scanConfigurations = listOf("runtimeClasspath")
+    // в spring boot 4 у runtimeClasspath в предках есть testAndDevelopmentOnly,
+    // и плагин по слову test пропускает её как тестовую
+    skipTestGroups = false
     failBuildOnCVSS = 7.0f
     formats = listOf("HTML", "JSON")
     // анализатор .net сборок без dotnet только пишет предупреждения
