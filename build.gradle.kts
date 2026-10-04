@@ -4,6 +4,7 @@ plugins {
     id("org.springframework.boot") version "4.1.1"
     id("io.spring.dependency-management") version "1.1.7"
     kotlin("plugin.jpa") version "2.3.21"
+    id("org.owasp.dependencycheck") version "13.0.0"
 }
 
 group = "ru.dolinnyi"
@@ -53,4 +54,15 @@ allOpen {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+dependencyCheck {
+    // ключ nvd из переменной окружения, в ci он приходит из secrets
+    nvd.apiKey = System.getenv("NVD_API_KEY") ?: ""
+    scanConfigurations = listOf("runtimeClasspath")
+    failBuildOnCVSS = 7.0f
+    formats = listOf("HTML", "JSON")
+    // анализаторы для .net и node тут не нужны, только шумят
+    analyzers.assemblyEnabled = false
+    analyzers.nodeEnabled = false
 }
