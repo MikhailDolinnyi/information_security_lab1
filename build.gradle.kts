@@ -62,7 +62,6 @@ dependencyCheck {
     scanConfigurations = listOf("runtimeClasspath")
     failBuildOnCVSS = 7.0f
     formats = listOf("HTML", "JSON")
-    // анализаторы для .net и node тут не нужны, только шумят
+    // анализатор .net сборок без dotnet только пишет предупреждения
     analyzers.assemblyEnabled = false
-    analyzers.nodeEnabled = false
 }
