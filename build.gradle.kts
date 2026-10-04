@@ -1,15 +1,18 @@
 plugins {
-    kotlin("jvm") version "2.3.21"
-    kotlin("plugin.spring") version "2.3.21"
+    kotlin("jvm") version "2.4.20"
+    kotlin("plugin.spring") version "2.4.20"
     id("org.springframework.boot") version "4.1.1"
     id("io.spring.dependency-management") version "1.1.7"
-    kotlin("plugin.jpa") version "2.3.21"
+    kotlin("plugin.jpa") version "2.4.20"
     id("org.owasp.dependencycheck") version "13.0.0"
 }
 
 group = "ru.dolinnyi"
 version = "0.0.1-SNAPSHOT"
 description = "Secure REST API"
+
+// в boot 4.1.1 tomcat 11.0.24 с открытыми cve, поднимаем до исправленной
+extra["tomcat.version"] = "11.0.26"
 
 java {
     toolchain {
