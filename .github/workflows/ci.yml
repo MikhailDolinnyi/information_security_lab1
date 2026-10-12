@@ -59,7 +59,8 @@ jobs:
           path: ~/.gradle/dependency-check-data
           key: dependency-check-data-${{ github.run_id }}
           restore-keys: dependency-check-data-
-      - run: ./gradlew dependencyCheckAnalyze
+      - run: ./gradlew dependencyCheckAnalyze --info --stacktrace
+        timeout-minutes: 20
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
